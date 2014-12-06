@@ -1,1 +1,2 @@
-run node test.js
+to run:
+	$> node test.js
