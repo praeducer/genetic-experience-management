@@ -24,7 +24,7 @@ function Individual(numberOfTraits, possibleTraits){
 	}
 
 	this.traits = this.newTraits();
-	this.fitness = new Boolean();
+	this.fitness = 0;
 
 	// GENETIC OPERATIONS
 	this.mutate = function(chance){
@@ -36,6 +36,12 @@ function Individual(numberOfTraits, possibleTraits){
 				this.traits[i] = this.getRandomTrait();
 			}
 		}
+
+	}
+
+	this.evaluate = function(desiredTraits){
+
+		this.fitness = this.countDesiredTraits();
 
 	}
 
@@ -71,11 +77,27 @@ function Individual(numberOfTraits, possibleTraits){
 
 	}
 
+	this.countDesiredTraits = function(desired){
+
+		var desiredTraits = typeof desired !== 'undefined' ? desired : new Array("teal", "purple");
+		var count = 0;
+
+		for (var i = 0; i < this.traits.length; i++) {
+			for (var j = 0; j < desiredTraits.length; j++) {
+				if (this.traits[i] == desiredTraits[j]){
+					count++;
+				}
+			}
+		}
+		return count;
+
+	}
+
 	// PRINTS
 	this.prettyPrint = function(){
-
+		
 		console.log('\tTraits => ' + this.traitsToString());
-		console.log('\tFitness => ' + this.fitness.toString());
+		console.log('\tFitness => ' + this.fitness);
 
 	}
 

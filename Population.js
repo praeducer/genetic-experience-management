@@ -31,7 +31,7 @@ function Population(numberOfIndividuals, numberOfTraits, possibleTraits, desired
 	// GENETIC OPERATORS
 	this.combine = function(individual, mate, crossover, gen){
 
-		var mate = typeof mate !== 'undefined' ? mate : this.findRandomFitIndividual();
+		var mate = typeof mate !== 'undefined' ? mate : this.findRandomFitOrFitterIndividual();
 		var crossoverPoint = typeof crossover !== 'undefined' ? crossover : Math.floor(individual.traits.length / 2);
 		var generation = typeof gen !== 'undefined' ? gen : this.currentGeneration;
 		var child = new Individual();
@@ -52,29 +52,47 @@ function Population(numberOfIndividuals, numberOfTraits, possibleTraits, desired
 		var generation = typeof gen !== 'undefined' ? gen : this.currentGeneration;
 
 		for (var i = 0; i < generation.length; i++) {
-			if(generation[i].hasTraits(desiredTraits)){
-				generation[i].fitness = true;
-			}
+			generation[i].evaluate(desiredTraits);
 		}
+
+	}
+
+	this.findRandomFitOrFitterIndividual = function(fit, gen){
+
+		var fitness = typeof fit !== 'undefined' ? fit : 1;
+		var fitOrFitterIndividuals = this.allFitIndividuals(fitness, gen);
+		var generation = typeof gen !== 'undefined' ? gen : this.currentGeneration;
+
+		if (fitOrFitterIndividuals.length != 0){
+			var randomInt = this.getRandomInt(0, fitOrFitterIndividuals.length - 1);
+			return fitOrFitterIndividuals[randomInt];			
+		}
+		return null;
 
 	}
 
 	this.findRandomFitIndividual = function(gen){
 
 		var generation = typeof gen !== 'undefined' ? gen : this.currentGeneration;
-		var fitIndividuals = this.allFitIndividuals();
-		var randomInt = this.getRandomInt(0, fitIndividuals.length - 1);
-		return fitIndividuals[randomInt];
+		var fitIndividuals = this.allFitIndividuals(gen);
+
+		if (fitIndividuals.length != 0){
+			var randomInt = this.getRandomInt(0, fitIndividuals.length - 1);
+			return fitIndividuals[randomInt];			
+		}
+		return null;
 
 	}
 
-	this.allFitIndividuals = function(gen){
+	this.allFitIndividuals = function(fit, gen){
 
+		var fitness = typeof fit !== 'undefined' ? fit : 1;
 		var generation = typeof gen !== 'undefined' ? gen : this.currentGeneration;
+
 		var fitIndividuals = new Array();
 
 		for (var i = 0; i < generation.length; i++) {
-			if(generation[i].fitness === true){
+			if(generation[i].fitness >= fitness){
 				fitIndividuals.push(generation[i]);
 			}
 		}
