@@ -29,15 +29,15 @@ function Population(numberOfIndividuals, numberOfTraits, possibleTraits, desired
 
 
 	// GENETIC OPERATORS
-	this.combine = function(individual, mate, div, gen){
+	this.combine = function(individual, mate, crossover, gen){
 
 		var mate = typeof mate !== 'undefined' ? mate : this.findRandomFitIndividual();
-		var divide = typeof div !== 'undefined' ? div : Math.floor(individual.traits.length / 2);
+		var crossoverPoint = typeof crossover !== 'undefined' ? crossover : Math.floor(individual.traits.length / 2);
 		var generation = typeof gen !== 'undefined' ? gen : this.currentGeneration;
 		var child = new Individual();
 
 		for (var i = 0; i < child.traits.length; i++) {
-			if(i < divide){
+			if(i < crossoverPoint){
 				child.traits[i] = individual.traits[i];
 			} else {
 				child.traits[i] = mate.traits[i];
@@ -74,7 +74,7 @@ function Population(numberOfIndividuals, numberOfTraits, possibleTraits, desired
 		var fitIndividuals = new Array();
 
 		for (var i = 0; i < generation.length; i++) {
-			if(generation[i].fitness){
+			if(generation[i].fitness === true){
 				fitIndividuals.push(generation[i]);
 			}
 		}
@@ -94,6 +94,7 @@ function Population(numberOfIndividuals, numberOfTraits, possibleTraits, desired
 		var generation = typeof gen !== 'undefined' ? gen : this.currentGeneration;
 
 		for (var i = 0; i < generation.length; i++) {
+			console.log('(' + i + ')');
 			generation[i].prettyPrint();
 		}
 

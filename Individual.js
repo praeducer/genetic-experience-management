@@ -74,8 +74,8 @@ function Individual(numberOfTraits, possibleTraits){
 	// PRINTS
 	this.prettyPrint = function(){
 
-		console.log('Traits: ' + this.traitsToString());
-		console.log('Fitness: ' + this.fitness.toString() + '\n');
+		console.log('\tTraits => ' + this.traitsToString());
+		console.log('\tFitness => ' + this.fitness.toString());
 
 	}
 
