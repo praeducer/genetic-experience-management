@@ -1,5 +1,9 @@
 // GENETIC EXPERIENCE MANAGEMENT
 // by Paul Prae
+// TODO: Unit Test thoroughly
+// TODO: A Generation should probably be its own class
+// TODO: Learn how to override methods properly
+// TODO: Figure out how to set things up so there are methods that alter 'this' object's properties versus those of an object that is passed in.
 function Population(numberOfIndividuals, numberOfTraits, possibleTraits, desiredTraits){
 	
 	var Individual = require('./Individual');
@@ -36,18 +40,24 @@ function Population(numberOfIndividuals, numberOfTraits, possibleTraits, desired
 
 	this.lastGeneration = new Array();
 	this.currentGeneration = this.newGeneration();
-	this.nextGeneration = new Array();
 
 
 	// GENETIC OPERATORS
-	//TODO: test
+	//TODO: test more
+	// TODO: make work right
 	this.evolve = function(desiredTraits, generation){
 
+		this.lastGeneration = this.currentGeneration;
 		var desiredTraits = typeof desiredTraits !== 'undefined' ? desiredTraits : this.desiredTraits;
 		var generation = typeof generation !== 'undefined' ? generation : this.currentGeneration;
-		this.currentGeneration = this.evaluate(desiredTraits, generation);
-		this.nextGeneration = this.createNextGeneration(generation.length, this.currentGeneration);
-		//TODO:...
+		var selection = this.selectFitMembers(generation.length, generation);
+		var nextGeneration = new Array();
+
+		nextGeneration = this.crossoverGeneration(selection);
+		nextGeneration = this.mutateGeneration(nextGeneration);
+		this.currentGeneration = nextGeneration;
+
+		return nextGeneration;
 
 	}
 
@@ -64,35 +74,52 @@ function Population(numberOfIndividuals, numberOfTraits, possibleTraits, desired
 
 	}
 
-	//TODO: test
-	this.createNextGeneration = function(numberOfIndividuals, generation){
+	// TODO: Always make sure previous fittest individuals survive. 
+	// TODO: When choosing random individuals, always choose fittest members.
+	this.selectFitMembers = function(numberOfIndividuals, generation){
 
 		var numberOfIndividuals = typeof numberOfIndividuals !== 'undefined' ? numberOfIndividuals : defaultNumberOfIndividuals;
 		var generation = typeof generation !== 'undefined' ? generation : this.currentGeneration;
-		//TODO:...
+		var fitIndividuals = this.allFitIndividuals(generation);
+		var selection = new Array();
+		for (var i = 0; i < numberOfIndividuals; i++) {
+			
+			if(i < fitIndividuals.length){
+				selection.push(fitIndividuals[i]);
+			} else {
+				selection.push(this.findRandomFitIndividual(fitIndividuals));
+			}
 
+		};
+
+		return selection;
 
 	}
 
-	//TODO: test
 	this.mutateGeneration = function(chance, generation){
 
 		var generation = typeof generation !== 'undefined' ? generation : this.currentGeneration;
 		var chance = typeof chance !== 'undefined' ? chance : defaultChanceOfMutation;
-		//TODO:...
+		
+		for (var i = 0; i < generation.length; i++) {
+			generation[i].mutate();
+		}
+
+		return generation;
 
 	}
 
-	//TODO: test
-	this.crossoverGeneration = function(crossoverPoint, generation){
+	this.crossoverGeneration = function(generation, crossoverPoint){
 
-		var crossoverPoint = typeof crossoverPoint !== 'undefined' ? crossoverPoint : Math.floor(individual.traits.length / 2);
 		var generation = typeof generation !== 'undefined' ? generation : this.currentGeneration;
+		var crossoverPoint = typeof crossoverPoint !== 'undefined' ? crossoverPoint : Math.floor(generation[0].traits.length / 2);
 		var nextGeneration = new Array();
 
 		for (var i = 0; i < generation.length; i++) {
 			nextGeneration.push(this.crossover(generation[i]));
 		}
+
+		return nextGeneration;
 
 	}
 
@@ -110,13 +137,16 @@ function Population(numberOfIndividuals, numberOfTraits, possibleTraits, desired
 				child.traits[i] = mate.traits[i];
 			}
 		}
+
+		child.evaluate();
+
 		return child;
 	}
 
 	this.findRandomFitOrFitterIndividual = function(fitness, generation){
 
 		var fitness = typeof fitness !== 'undefined' ? fitness : 1;
-		var fitOrFitterIndividuals = this.allFitIndividuals(fitness, generation);
+		var fitOrFitterIndividuals = this.allFitIndividuals(generation, fitness);
 		var generation = typeof generation !== 'undefined' ? generation : this.currentGeneration;
 
 		if (fitOrFitterIndividuals.length != 0){
@@ -132,15 +162,16 @@ function Population(numberOfIndividuals, numberOfTraits, possibleTraits, desired
 		var generation = typeof generation !== 'undefined' ? generation : this.currentGeneration;
 		var fitIndividuals = this.allFitIndividuals(generation);
 
-		if (fitIndividuals.length != 0){
+		if (fitIndividuals.length > 0){
 			var randomInt = this.getRandomInt(0, fitIndividuals.length - 1);
 			return fitIndividuals[randomInt];			
 		}
+
 		return null;
 
 	}
 
-	this.allFitIndividuals = function(fitness, generation){
+	this.allFitIndividuals = function(generation, fitness){
 
 		var fitness = typeof fitness !== 'undefined' ? fitness : 1;
 		var generation = typeof generation !== 'undefined' ? generation : this.currentGeneration;

@@ -6,26 +6,26 @@ var Population = require('./Population');
 console.log('\n~ TESTING ~');
 console.log('==============\n');
 
-console.log('~ New Individual ~');
+console.log('~ First Individual: Fitness Evaluation ~');
 console.log('--------------------');
 var individual = new Individual();
 individual.prettyPrint();
-console.log('Set fitness to 1:');
+console.log('Set fitness to 0:');
 console.log('---------------------');
-individual.fitness = 1;
+individual.fitness = 0;
 individual.prettyPrint();
 console.log('Set fitness to count of \'purple\' or \'teal\' traits:');
 console.log('----------------------');
 individual.fitness = individual.countDesiredTraits();
 individual.prettyPrint();
-
-console.log('\n~ Another Individual ~');
-console.log('------------------------');
-var individual = new Individual();
-individual.prettyPrint();
 console.log('Evaluate individual to see if it has desired traits of \'purple\' or \'teal\':');
 console.log('-------------------------------------------------------------------------------');
 individual.evaluate();
+individual.prettyPrint();
+
+console.log('\n~ Next Individual: Mutation ~');
+console.log('------------------------');
+var individual = new Individual();
 individual.prettyPrint();
 console.log('100% chance of mutation:');
 console.log('-------------------------');
@@ -46,8 +46,8 @@ console.log('Has the trait \'tan\'?:');
 console.log('---------------------');
 console.log(individual.hasTrait('tan'));
 
-console.log('\n' + '~ New Population ~');
-console.log('-------------------');
+console.log('\n' + '~ First Population: Fitness Evaluation ~');
+console.log('----------------------------------------');
 var population = new Population();
 population.prettyPrintGeneration();
 console.log('\nEvaluate population to see if it has desired traits of \'purple\' or \'teal\':');
@@ -59,24 +59,56 @@ console.log('------------------------------------');
 population.prettyPrintGeneration(population.allFitIndividuals());
 console.log('\nA random fit individual:');
 console.log('------------------------------------');
-population.findRandomFitIndividual().prettyPrint();
+rando = population.findRandomFitIndividual();
+rando.prettyPrint();
 console.log('\nAll individuals with a fitness 2 or greater:');
 console.log('------------------------------------');
-population.prettyPrintGeneration(population.allFitIndividuals(2));
+population.prettyPrintGeneration(population.allFitIndividuals(population.currentGeneration, 2));
 console.log('\nA random individual with a fitness 2 or greater:');
 console.log('------------------------------------');
 individual = population.findRandomFitOrFitterIndividual(2);
 if (individual != null){ individual.prettyPrint();}
+console.log('\nSelect 10 fit individuals:');
+console.log('------------------------------------');
+population.prettyPrintGeneration(population.selectFitMembers());
+
+
+console.log('\n' + '~ Next Population: Crossing Over ~');
+console.log('------------------------------------');
+var population = new Population();
+population.prettyPrintGeneration();
 console.log('\nCombining first individual with second produces:');
 console.log('-------------------------------------------------');
 first = population.currentGeneration[0];
 second = population.currentGeneration[1];
-child = population.combine(first, second);
+child = population.crossover(first, second);
 child.prettyPrint();
 console.log('Combining first individual with a random fit individual:');
 console.log('-------------------------------------------------');
-child = population.combine(first);
+child = population.crossover(first);
 child.prettyPrint();
+console.log('\nCrossing over entire generation. Each member mates with a random fit member:');
+console.log('------------------------------------------------------------------------------');
+crossedGeneration = population.crossoverGeneration();
+population.prettyPrintGeneration(crossedGeneration);
 
-console.log('\n=================================================================\n');
+console.log('\n' + '~ Next Population: Mutation ~');
+console.log('-------------------------------');
+var population = new Population();
+population.prettyPrintGeneration();
+console.log('\nMutating entire generation. 30% chance of mutation:');
+console.log('------------------------------------------------------------------------------');
+mutatedGeneration = population.mutateGeneration();
+population.prettyPrintGeneration(mutatedGeneration);
+
+// not ready yet
+// console.log('\n' + '~ Next Population: Evolution ~');
+// console.log('-------------------------------');
+// var population = new Population();
+// population.prettyPrintGeneration();
+// console.log('\nEvolve the current generation to the next (selection, crossover, mutation):');
+// console.log('------------------------------------------------------------------------------');
+// population.prettyPrintGeneration(population.evolve());
+
+// console.log('\n=================================================================\n');
 

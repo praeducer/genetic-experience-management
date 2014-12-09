@@ -1,15 +1,22 @@
 // GENETIC EXPERIENCE MANAGEMENT
 // by Paul Prae
-function Individual(numberOfTraits, possibleTraits){
+// TODO: Unit Test throughly
+// TODO: Traits should probably be there own class
+// TODO: Learn how to override methods properly
+function Individual(numberOfTraits, possibleTraits, desiredTraits){
 	
 	// PROPERTIES
+	// TODO: Configuration file
 	var defaultPossibleTraits = new Array( "red", "blue", "yellow", "green", "teal", "purple", "orange", "brown", "black", "white");
+	var defaultDesiredTraits = new Array("teal", "purple");
 	var defaultNumberOfTraits = 3;
+	var defaultChanceOfMutation = 0.05;
 
 	this.numberOfTraits = typeof numberOfTraits !== 'undefined' ? numberOfTraits : defaultNumberOfTraits;
 	this.possibleTraits = typeof possibleTraits !== 'undefined' ? possibleTraits : defaultPossibleTraits;
+	this.desiredTraits = typeof desiredTraits !== 'undefined' ? desiredTraits : defaultDesiredTraits;
 
-	// TODO: Why does this need to be defined before it is called below? Can we avoid this? Clumsy with a function defined inside this too...
+	// TODO: Why do these need to be defined before it is called below? Can we avoid this? Clumsy with a function defined inside this too...
 	this.newTraits = function(){
 
 		var traits = new Array();
@@ -29,10 +36,39 @@ function Individual(numberOfTraits, possibleTraits){
 	this.traits = this.newTraits();
 	this.fitness = 0;
 
+	this.countDesiredTraits = function(desired){
+
+		var desiredTraits = typeof desired !== 'undefined' ? desired : defaultDesiredTraits;
+		var count = 0;
+
+		for (var i = 0; i < this.traits.length; i++) {
+			for (var j = 0; j < desiredTraits.length; j++) {
+				if (this.traits[i] == desiredTraits[j]){
+					count++;
+				}
+			}
+		}
+		return count;
+
+	}
+
+	// TODO: Something is redundant or this needs to be multiple methods
+	this.evaluate = function(desiredTraits){
+
+		var desiredTraits = typeof desiredTraits !== 'undefined' ? desiredTraits : defaultDesiredTraits;
+		fitness = this.countDesiredTraits();
+		this.fitness = fitness;
+		return fitness;
+
+	}
+
+	this.evaluate();
+
+
 	// GENETIC OPERATIONS
 	this.mutate = function(chance){
 
-		var chance = typeof chance !== 'undefined' ? chance : 0.05;
+		var chance = typeof chance !== 'undefined' ? chance : defaultChanceOfMutation;
 
 		for (var i = 0; i < this.numberOfTraits; i++) {
 			if(Math.random() <= chance){
@@ -40,11 +76,9 @@ function Individual(numberOfTraits, possibleTraits){
 			}
 		}
 
-	}
+		this.evaluate();
 
-	this.evaluate = function(desiredTraits){
-
-		this.fitness = this.countDesiredTraits();
+		return this;
 
 	}
 
@@ -82,7 +116,7 @@ function Individual(numberOfTraits, possibleTraits){
 
 	this.countDesiredTraits = function(desired){
 
-		var desiredTraits = typeof desired !== 'undefined' ? desired : new Array("teal", "purple");
+		var desiredTraits = typeof desired !== 'undefined' ? desired : defaultDesiredTraits;
 		var count = 0;
 
 		for (var i = 0; i < this.traits.length; i++) {
