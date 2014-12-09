@@ -21,4 +21,4 @@ Selection and combination:
 Only parents with a fitness greater than zero will get to mate. They will create children for the next generation. All parents will be removed from the population after they create children except the most fit parent, which will replace the weakest child. Children will be roughly half the traits of one parent and another random fit parent.
 
 Mutation:
-We need to converge fairly quickly so will limit exploration. Crossover and the initial state should provide enough variation. There is a 5% chance that any of the child’s colors is switched to a random color from the color pool.
+We need to converge fairly quickly so will limit exploration. Crossover and the initial state should provide enough variation. There is a 5% chance that any of the child’s colors are switched to a random color from the color pool.
