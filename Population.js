@@ -4,9 +4,6 @@
 // TODO: A Generation should probably be its own class
 // TODO: Learn how to override methods properly
 // TODO: Figure out how to set things up so there are methods that alter 'this' object's properties versus those of an object that is passed in.
-// TODO: Find fittest individual
-// TODO: Calculate average fitness of a generation.
-// TODO: Keep fittest individual from previous generation
 function Population(numberOfIndividuals, numberOfTraits, possibleTraits, desiredTraits){
 	
 	var Individual = require('./Individual');
@@ -53,11 +50,16 @@ function Population(numberOfIndividuals, numberOfTraits, possibleTraits, desired
 		this.lastGeneration = this.currentGeneration;
 		var desiredTraits = typeof desiredTraits !== 'undefined' ? desiredTraits : this.desiredTraits;
 		var generation = typeof generation !== 'undefined' ? generation : this.currentGeneration;
+		var mostFitParent = this.findAMostFitIndividual(generation);
 		var selection = this.selectFitMembers(generation.length, generation);
 		var nextGeneration = new Array();
+		var indexOfUnfitChild = null;
 
 		nextGeneration = this.crossoverGeneration(selection);
 		nextGeneration = this.mutateGeneration(defaultChanceOfMutation, nextGeneration);
+
+		indexOfUnfitChild = this.findIndexOfALeastFitIndividual(nextGeneration);
+		nextGeneration[indexOfUnfitChild] = mostFitParent;
 		this.currentGeneration = nextGeneration;
 
 		return nextGeneration;
@@ -74,6 +76,19 @@ function Population(numberOfIndividuals, numberOfTraits, possibleTraits, desired
 		}
 
 		return generation;
+
+	}
+
+	this.averageFitness = function(generation){
+
+		var generation = typeof generation !== 'undefined' ? generation : this.currentGeneration;
+		var totalFitness = 0;
+
+		for (var i = 0; i < generation.length; i++) {
+			totalFitness += generation[i].fitness;
+		}
+
+		return (totalFitness / generation.length);
 
 	}
 
@@ -126,6 +141,7 @@ function Population(numberOfIndividuals, numberOfTraits, possibleTraits, desired
 
 	}
 
+	// TODO: Do a real crossover and prouce two children
 	this.crossover = function(individual, mate, crossoverPoint, generation){
 
 		// this default mate selection will drive fitness up. yay! except watch for local maximums.
@@ -145,6 +161,55 @@ function Population(numberOfIndividuals, numberOfTraits, possibleTraits, desired
 		child.evaluate();
 
 		return child;
+	}
+
+	this.findAMostFitIndividual = function(generation){
+
+		var generation = typeof generation !== 'undefined' ? generation : this.currentGeneration;
+		var fittest = new Individual();
+
+		for (var i = 0; i < generation.length; i++) {
+			if(generation[i].fitness >= fittest.fitness){
+				fittest = generation[i];
+			}
+		}
+
+		return fittest;
+
+	}
+
+	this.findALeastFitIndividual = function(generation){
+
+		var generation = typeof generation !== 'undefined' ? generation : this.currentGeneration;
+		var leastFit = new Individual();
+		var leastFitIndex = 0;
+
+		for (var i = 0; i < generation.length; i++) {
+			if(generation[i].fitness <= leastFit.fitness){
+				leastFit = generation[i];
+				leastFitIndex = i;
+			}
+		}
+
+		return leastFit;
+
+	}
+
+	this.findIndexOfALeastFitIndividual = function(generation){
+
+		var generation = typeof generation !== 'undefined' ? generation : this.currentGeneration;
+		var leastFit = new Individual();
+		var leastFitIndex = 0;
+
+		for (var i = 0; i < generation.length; i++) {
+			if(generation[i].fitness <= leastFit.fitness){
+				leastFit = generation[i];
+				leastFitIndex = i;
+			}
+		}
+
+		return leastFitIndex;
+
 	}
 
 	this.findRandomFitOrFitterIndividual = function(fitness, generation){

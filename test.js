@@ -54,9 +54,20 @@ console.log('\nEvaluate population to see if it has desired traits of \'purple\'
 console.log('-------------------------------------------------------------------------------');
 population.evaluate();
 population.prettyPrintGeneration();
+console.log('\nAverage fitness:');
+console.log('--------------------');
+console.log(population.averageFitness());
+console.log('\nIndex of a least fit individual:');
+console.log('------------------------------------');
+index = population.findIndexOfALeastFitIndividual();
+console.log(index);
 console.log('\nAll fit individuals:');
 console.log('------------------------------------');
 population.prettyPrintGeneration(population.allFitIndividuals());
+console.log('\nA most fit individual:');
+console.log('------------------------------------');
+fittest = population.findAMostFitIndividual();
+fittest.prettyPrint();
 console.log('\nA random fit individual:');
 console.log('------------------------------------');
 rando = population.findRandomFitIndividual();
@@ -71,7 +82,6 @@ if (individual != null){ individual.prettyPrint();}
 console.log('\nSelect 10 fit individuals:');
 console.log('------------------------------------');
 population.prettyPrintGeneration(population.selectFitMembers());
-
 
 console.log('\n' + '~ Next Population: Crossing Over ~');
 console.log('------------------------------------');
@@ -106,6 +116,17 @@ console.log('\n' + '~ Next Population: Evolution ~');
 console.log('-------------------------------');
 var population = new Population();
 population.prettyPrintGeneration();
+console.log('\nA most fit individual:');
+console.log('------------------------------------');
+fittest = population.findAMostFitIndividual();
+fittest.prettyPrint();
+console.log('\nA least fit individual:');
+console.log('------------------------------------');
+fittest = population.findALeastFitIndividual();
+fittest.prettyPrint();
+console.log('\nAverage fitness:');
+console.log('--------------------');
+console.log(population.averageFitness());
 console.log('\nEvolve the current generation to the next (selection, crossover, mutation):');
 console.log('------------------------------------------------------------------------------');
 population.prettyPrintGeneration(population.evolve());
@@ -121,6 +142,19 @@ population.prettyPrintGeneration(population.evolve());
 console.log('\nSix generations later, much more fit!:');
 console.log('------------------------------------');
 population.prettyPrintGeneration(population.evolve());
+console.log('\nA most fit individual:');
+console.log('------------------------------------');
+fittest = population.findAMostFitIndividual();
+fittest.prettyPrint();
+console.log('\nA least fit individual:');
+console.log('------------------------------------');
+fittest = population.findALeastFitIndividual();
+fittest.prettyPrint();
+console.log('\nAverage fitness:');
+console.log('--------------------');
+console.log(population.averageFitness());
+
+
 
 console.log('\n=================================================================\n');
 

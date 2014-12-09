@@ -1,6 +1,6 @@
 // GENETIC EXPERIENCE MANAGEMENT
 // by Paul Prae
-// TODO: Unit Test throughly
+// TODO: Unit Test thoroughly
 // TODO: Traits should probably be there own class
 // TODO: Learn how to override methods properly
 function Individual(numberOfTraits, possibleTraits, desiredTraits){
