@@ -102,13 +102,25 @@ mutatedGeneration = population.mutateGeneration();
 population.prettyPrintGeneration(mutatedGeneration);
 
 // not ready yet
-// console.log('\n' + '~ Next Population: Evolution ~');
-// console.log('-------------------------------');
-// var population = new Population();
-// population.prettyPrintGeneration();
-// console.log('\nEvolve the current generation to the next (selection, crossover, mutation):');
-// console.log('------------------------------------------------------------------------------');
-// population.prettyPrintGeneration(population.evolve());
+console.log('\n' + '~ Next Population: Evolution ~');
+console.log('-------------------------------');
+var population = new Population();
+population.prettyPrintGeneration();
+console.log('\nEvolve the current generation to the next (selection, crossover, mutation):');
+console.log('------------------------------------------------------------------------------');
+population.prettyPrintGeneration(population.evolve());
+console.log('\nEvolve again:');
+console.log('------------------------------------');
+population.prettyPrintGeneration(population.evolve());
+console.log('\nAnd then again:');
+console.log('------------------------------------');
+population.prettyPrintGeneration(population.evolve());
+console.log('\nAnd again:');
+console.log('------------------------------------');
+population.prettyPrintGeneration(population.evolve());
+console.log('\nSix generations later, much more fit!:');
+console.log('------------------------------------');
+population.prettyPrintGeneration(population.evolve());
 
-// console.log('\n=================================================================\n');
+console.log('\n=================================================================\n');
 

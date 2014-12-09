@@ -4,6 +4,9 @@
 // TODO: A Generation should probably be its own class
 // TODO: Learn how to override methods properly
 // TODO: Figure out how to set things up so there are methods that alter 'this' object's properties versus those of an object that is passed in.
+// TODO: Find fittest individual
+// TODO: Calculate average fitness of a generation.
+// TODO: Keep fittest individual from previous generation
 function Population(numberOfIndividuals, numberOfTraits, possibleTraits, desiredTraits){
 	
 	var Individual = require('./Individual');
@@ -54,7 +57,7 @@ function Population(numberOfIndividuals, numberOfTraits, possibleTraits, desired
 		var nextGeneration = new Array();
 
 		nextGeneration = this.crossoverGeneration(selection);
-		nextGeneration = this.mutateGeneration(nextGeneration);
+		nextGeneration = this.mutateGeneration(defaultChanceOfMutation, nextGeneration);
 		this.currentGeneration = nextGeneration;
 
 		return nextGeneration;
@@ -125,6 +128,7 @@ function Population(numberOfIndividuals, numberOfTraits, possibleTraits, desired
 
 	this.crossover = function(individual, mate, crossoverPoint, generation){
 
+		// this default mate selection will drive fitness up. yay! except watch for local maximums.
 		var mate = typeof mate !== 'undefined' ? mate : this.findRandomFitOrFitterIndividual();
 		var crossoverPoint = typeof crossoverPoint !== 'undefined' ? crossoverPoint : Math.floor(individual.traits.length / 2);
 		var generation = typeof generation !== 'undefined' ? generation : this.currentGeneration;
