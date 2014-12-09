@@ -3,8 +3,11 @@
 function Individual(numberOfTraits, possibleTraits){
 	
 	// PROPERTIES
-	this.numberOfTraits = typeof numberOfTraits !== 'undefined' ? numberOfTraits : 3;
-	this.possibleTraits = typeof possibleTraits !== 'undefined' ? possibleTraits : new Array( "red", "blue", "yellow", "green", "teal", "purple", "orange", "brown", "black", "white");
+	var defaultPossibleTraits = new Array( "red", "blue", "yellow", "green", "teal", "purple", "orange", "brown", "black", "white");
+	var defaultNumberOfTraits = 3;
+
+	this.numberOfTraits = typeof numberOfTraits !== 'undefined' ? numberOfTraits : defaultNumberOfTraits;
+	this.possibleTraits = typeof possibleTraits !== 'undefined' ? possibleTraits : defaultPossibleTraits;
 
 	// TODO: Why does this need to be defined before it is called below? Can we avoid this? Clumsy with a function defined inside this too...
 	this.newTraits = function(){
