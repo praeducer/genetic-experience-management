@@ -1,18 +1,17 @@
-To run:
+This is my first time writing back-end, prototype-based JavaScript. There is much refactoring ahead before I can turn this into a full fledged web service. I hope to tie this into a basic web site that optimizes itself based on traits the users like.
+
+##Demo
+To try it out:
 	$> node demo.js
 
-#IDEA
-Use genetic algorithms to optimize the customer experience on our sites. It could be implemented as a strategy in preamp. http://en.wikipedia.org/wiki/Genetic_algorithm
-
-##Prototype:
 To start, we have the algorithm optimize a combination of three colors that a person feels go together really well. We will use my favorite color, purple, and my girlfriend's favorite color, teal, as optimal values. We automate the user input so we can iterate faster. 
 
-#GENETICS
+##The Genetics
 Individual:
 An array of three colors.
 
-Generations: Initial and final states of the population:
-A population is ten individuals initialized with three random colors from the pool of potential colors. 
+Generations:
+A population is ten individuals, each initialized with three random colors from the pool of potential colors. 
 
 Fitness operator:
 It will simply count how many desired colors are in the individual.
