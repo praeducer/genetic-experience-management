@@ -1,5 +1,6 @@
 // GENETIC EXPERIENCE MANAGEMENT
 // by Paul Prae
+// First created December 5th, 2014
 var Individual = require('./Individual');
 var Population = require('./Population');
 

@@ -1,5 +1,6 @@
 // GENETIC EXPERIENCE MANAGEMENT
 // by Paul Prae
+// First created December 5th, 2014
 // TODO: Unit Test thoroughly
 // TODO: Traits should probably be there own class
 // TODO: Learn how to override methods properly
