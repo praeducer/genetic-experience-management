@@ -10,8 +10,8 @@ function Population(numberOfIndividuals, numberOfTraits, possibleTraits, desired
 
 	// PROPERTIES
 	// TODO: Configuration file.
-	var defaultPossibleTraits = new Array( "red", "blue", "yellow", "green", "teal", "purple", "orange", "brown", "black", "white");
-	var defaultDesiredTraits = new Array("teal", "purple");
+	var defaultPossibleTraits = new Array( "red", "blue", "yellow", "green", "turquoise", "purple", "orange", "brown", "black", "white");
+	var defaultDesiredTraits = new Array("turquoise", "purple");
 	var defaultNumberOfIndividuals = 10;
 	var defaultNumberOfTraits = 3;
 	var defaultChanceOfMutation = 0.05;

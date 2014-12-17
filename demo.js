@@ -3,8 +3,11 @@
 var Individual = require('./Individual');
 var Population = require('./Population');
 
-console.log('\n' + '~ Evolution of Color Traits: Desired Traits are \'purple\' and \'teal\' ~');
-console.log('------------------------------------------------------------------------------');
+console.log('\n' + '============================================================================');
+console.log('~ Evolution of Color Traits: Desired Traits are \'purple\' and \'turquoise\' ~');
+console.log('============================================================================');
+console.log('\n\nFirst generation:');
+console.log('--------------------------');
 var population = new Population();
 population.prettyPrintGeneration();
 console.log('\nA most fit individual:');
@@ -54,3 +57,6 @@ fittest.prettyPrint();
 console.log('\nAverage fitness:');
 console.log('--------------------');
 console.log(population.averageFitness());
+console.log();
+console.log('===================================================================================');
+console.log();

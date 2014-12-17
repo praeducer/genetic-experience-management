@@ -4,7 +4,7 @@ This is my first time writing back-end, prototype-based JavaScript. There is muc
 To try it out:
 	$> node demo.js
 
-To start, we have the algorithm optimize a combination of three colors that a person feels go together really well. We will use my favorite color, purple, and my girlfriend's favorite color, teal, as optimal values. We automate the user input so we can iterate faster. 
+To start, we have the algorithm optimize a combination of three colors that a person feels go together really well. We will use my favorite color, purple, and my girlfriend's favorite color, turquoise, as optimal values. We automate the user input so we can iterate faster. 
 
 ##The Genetics
 Individual:
