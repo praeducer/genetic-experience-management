@@ -8,5 +8,38 @@ var genomeConfig = '{\
 						"backgroundColor" : ["white", "black", "gray", "red", "orange", "yellow", "green", "blue", "purple", "brown", "pink", "turquoise"]\
 					}';
 
+console.log("\nA new Genome:")
+console.log('---------------');
 var genome = new Genome(genomeConfig);
 genome.printGenome();
+
+console.log("\nNumber of Genes:")
+console.log('---------------');
+console.log(genome.getCount());
+
+console.log("\nNames of Genes:")
+console.log('---------------');
+console.log(genome.getNames());
+
+console.log("\n100% Mutation:")
+console.log('---------------');
+genome.mutate(1);
+genome.printGenome();
+
+console.log("\n50% Mutation:")
+console.log('---------------');
+genome.mutate(0.5);
+genome.printGenome();
+
+console.log("\nEqual to itself?")
+console.log('---------------');
+console.log(genome.isEqual(genome));
+
+console.log("\nAnother Genome:")
+console.log('---------------');
+var genome2 = new Genome(genomeConfig);
+genome2.printGenome();
+
+console.log("\nEqual to new genome?")
+console.log('---------------');
+console.log(genome.isEqual(genome2));
