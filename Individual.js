@@ -61,6 +61,12 @@ function Individual(individualJSON){
 		return fitness;
 	}
 
+	this.setGenome = function(newGenome){
+
+		genome = newGenome;
+
+	}
+
 
 	/* Genetic operators */
 	this.mutate = function(){
@@ -70,8 +76,30 @@ function Individual(individualJSON){
 
 	}
 
+	this.crossover = function(mate){
 
-	// PRINTS
+		// create a configuration array with one value of each gene from each parent
+		var childConfig = new Object();
+		// populate with this parents genes
+		childConfig['genome'] = genome.getGenes();
+		geneNames = genome.getNames();
+
+		var mateGenes = mate.getGenome().getGenes();
+
+		// for each gene name in the genome, push the mates genes onto the config object
+		for (var i = 0; i < genome.getCount(); i++) {
+			
+			childConfig['genome'][geneNames[i]].push(mateGenes[geneNames[i]]);
+
+		};
+
+		// convert it to the JSON this class expects
+		var childJSON = JSON.stringify(childConfig, null, '\t');
+
+	}
+
+
+	// Prints
 	this.print = function(){
 		
 		console.log(this.getJSON());

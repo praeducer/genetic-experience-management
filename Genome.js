@@ -73,6 +73,31 @@ function Genome(genomeJSON){
 
 	}
 
+	//TODO: Implement
+	this.crossover = function(mate){
+
+		var Child = new Genome(genomeJSON);
+		// // create a configuration array with one value of each gene from each parent
+		// var childConfig = new Object();
+		// // populate with this parents genes
+		// childConfig['genome'] = genome.getGenes();
+		// geneNames = genome.getNames();
+
+		// var mateGenes = mate.getGenome().getGenes();
+
+		// // for each gene name in the genome, push the mates genes onto the config object
+		// for (var i = 0; i < genome.getCount(); i++) {
+			
+		// 	childConfig['genome'][geneNames[i]].push(mateGenes[geneNames[i]]);
+
+		// };
+
+		// // convert it to the JSON this class expects
+		// var childJSON = JSON.stringify(childConfig, null, '\t');
+		return Child;
+
+	}
+
 	/* Helper Methods */
 
 	this.hasGene = function(nameToMatch, valueToMatch){
