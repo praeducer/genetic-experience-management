@@ -2,6 +2,7 @@
 // by Paul Prae
 // First created December 5th, 2014
 // TODO: Unit Test thoroughly
+// TODO: Handle an empty Individual
 var Genome = require('./Genome');
 
 function Individual(individualJSON){
@@ -11,7 +12,7 @@ function Individual(individualJSON){
 
 	var genomeArray = individualArray['genome'];
 	var genomeJSON = JSON.stringify(genomeArray);
-	var genome = new Genome(genomeJSON);
+	var Genome = new Genome(genomeJSON);
 
 	var fitnessArray = individualArray['fitness'];
 	var fittestGenomeJSON = JSON.stringify(fitnessArray['fittestGenome']);
@@ -25,7 +26,7 @@ function Individual(individualJSON){
 	/* Methods for initialization */
 	this.evaluate = function(){
 
-		fitness = genome.howSimilar(fittestGenome);
+		fitness = Genome.howSimilar(fittestGenome);
 
 	}
 
@@ -36,7 +37,7 @@ function Individual(individualJSON){
 	this.getJSON = function(){
 
 		var individual = new Object();
-		individual['genome'] = genome.getGenes();
+		individual['Genome'] = Genome.getGenes();
 		individual['fitness'] = new Object();
 		individual['fitness']['value'] = fitness;
 		individual['mutation'] = new Object();
@@ -46,7 +47,7 @@ function Individual(individualJSON){
 	}
 
 	this.getGenome = function(){
-		return genome;
+		return Genome;
 	}
 
 	this.getFittestGenome = function(){
@@ -63,7 +64,7 @@ function Individual(individualJSON){
 
 	this.setGenome = function(newGenome){
 
-		genome = newGenome;
+		Genome = newGenome;
 
 	}
 
@@ -71,30 +72,16 @@ function Individual(individualJSON){
 	/* Genetic operators */
 	this.mutate = function(){
 
-		genome.mutate(mutationRate);
+		Genome.mutate(mutationRate);
 		this.evaluate();
 
 	}
 
 	this.crossover = function(mate){
 
-		// create a configuration array with one value of each gene from each parent
-		var childConfig = new Object();
-		// populate with this parents genes
-		childConfig['genome'] = genome.getGenes();
-		geneNames = genome.getNames();
-
-		var mateGenes = mate.getGenome().getGenes();
-
-		// for each gene name in the genome, push the mates genes onto the config object
-		for (var i = 0; i < genome.getCount(); i++) {
-			
-			childConfig['genome'][geneNames[i]].push(mateGenes[geneNames[i]]);
-
-		};
-
-		// convert it to the JSON this class expects
-		var childJSON = JSON.stringify(childConfig, null, '\t');
+		var Child = new Individual(individualJSON);
+		Child.setGenome(Genome.crossover(mate.getGenome()));
+		return Child;
 
 	}
 

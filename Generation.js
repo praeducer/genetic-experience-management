@@ -37,6 +37,8 @@ function Generation(generationJSON){
 
 	}
 
+	
+
 	/* More Getters and Setters */
 	this.getIndividuals = function(){
 		return individuals;
