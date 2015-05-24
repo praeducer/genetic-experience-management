@@ -53,4 +53,17 @@ console.log("\nHow similar is it to itself?")
 console.log('---------------');
 console.log(genome.howSimilar(genome));
 
+console.log("\nChild of original genome and new genome:")
+console.log('---------------');
+childGenome = genome.crossover(genome2);
+childGenome.print();
+
+console.log("\nHow similar is the child to the first parent?")
+console.log('---------------');
+console.log(childGenome.howSimilar(genome));
+
+console.log("\nHow similar is the child to the second parent?")
+console.log('---------------');
+console.log(childGenome.howSimilar(genome2));
+
 console.log();

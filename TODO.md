@@ -13,3 +13,5 @@
 * Remove old test.js and files from repo.
 * Update demo.js and README.
 * Store results and final population in a database such as Mongo (fits this JSON approach well).
+* Create test JSON objects in separate files for configuring each class e.g. genome.json.
+* Rename genome to phenotype.
