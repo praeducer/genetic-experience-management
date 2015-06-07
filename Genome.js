@@ -79,7 +79,6 @@ function Genome(genomeJSON){
 		} // end for
 	} // end mutate
 
-	//TODO: Implement
 	// Random chance any particular gene is from either parent.
 	this.crossover = function(mate){
 

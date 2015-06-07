@@ -27,17 +27,22 @@ var individualConfig = '{\
 
 console.log('~ First Individual ~');
 console.log('--------------------');
-var individual = new Individual(individualConfig);
-individual.print();
-
-console.log('\n~ Next Individual: Mutation ~');
-console.log('------------------------');
 var individual1 = new Individual(individualConfig);
 individual1.print();
 
-console.log('\n25% chance of mutation:');
+console.log('\nMutating First Individual with 25% chance of mutation:');
 console.log('-----------------------');
 individual1.mutate();
 individual1.print();
+
+console.log('\n~ Second Individual ~');
+console.log('------------------------');
+var individual2 = new Individual(individualConfig);
+individual2.print();
+
+console.log('\nChild after mating the two individuals:');
+console.log('-----------------------');
+child = individual1.crossover(individual2);
+child.print();
 
 console.log();

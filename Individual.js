@@ -3,16 +3,17 @@
 // First created December 5th, 2014
 // TODO: Unit Test thoroughly
 // TODO: Handle an empty Individual
-var Genome = require('./Genome');
 
 function Individual(individualJSON){
 	
+	var Genome = require('./Genome');
+
 	/* Setup Individual using configuration object */
 	var individualArray = JSON.parse(individualJSON);
 
 	var genomeArray = individualArray['genome'];
 	var genomeJSON = JSON.stringify(genomeArray);
-	var Genome = new Genome(genomeJSON);
+	var genome = new Genome(genomeJSON);
 
 	var fitnessArray = individualArray['fitness'];
 	var fittestGenomeJSON = JSON.stringify(fitnessArray['fittestGenome']);
@@ -26,7 +27,7 @@ function Individual(individualJSON){
 	/* Methods for initialization */
 	this.evaluate = function(){
 
-		fitness = Genome.howSimilar(fittestGenome);
+		fitness = genome.howSimilar(fittestGenome);
 
 	}
 
@@ -37,7 +38,7 @@ function Individual(individualJSON){
 	this.getJSON = function(){
 
 		var individual = new Object();
-		individual['Genome'] = Genome.getGenes();
+		individual['Genome'] = genome.getGenes();
 		individual['fitness'] = new Object();
 		individual['fitness']['value'] = fitness;
 		individual['mutation'] = new Object();
@@ -47,7 +48,7 @@ function Individual(individualJSON){
 	}
 
 	this.getGenome = function(){
-		return Genome;
+		return genome;
 	}
 
 	this.getFittestGenome = function(){
@@ -64,15 +65,15 @@ function Individual(individualJSON){
 
 	this.setGenome = function(newGenome){
 
-		Genome = newGenome;
+		genome = newGenome;
+		this.evaluate();
 
 	}
-
 
 	/* Genetic operators */
 	this.mutate = function(){
 
-		Genome.mutate(mutationRate);
+		genome.mutate(mutationRate);
 		this.evaluate();
 
 	}
@@ -80,11 +81,10 @@ function Individual(individualJSON){
 	this.crossover = function(mate){
 
 		var Child = new Individual(individualJSON);
-		Child.setGenome(Genome.crossover(mate.getGenome()));
+		Child.setGenome(genome.crossover(mate.getGenome()));
 		return Child;
 
 	}
-
 
 	// Prints
 	this.print = function(){
