@@ -15,11 +15,11 @@ genome.print();
 
 console.log("\nNumber of Genes:")
 console.log('---------------');
-console.log(genome.getCount());
+console.log(genome.length);
 
 console.log("\nNames of Genes:")
 console.log('---------------');
-console.log(genome.getNames());
+console.log(genome.names);
 
 console.log("\n100% Mutation:")
 console.log('---------------');

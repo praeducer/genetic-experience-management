@@ -2,78 +2,47 @@
 
 function Genome(genomeJSON){
 
-	/* Setup Genome using configuration object */
-	var potentialGenes = JSON.parse(genomeJSON);
-	var names = Object.keys(potentialGenes);
-	var count = Object.keys(potentialGenes).length;
-	var genes = new Object();
+    /* Setup Genome using configuration object */
+    // private
+    var potentialGenes = JSON.parse(genomeJSON);
+
+    // public
+	this.names = Object.keys(potentialGenes);
+	this.length = Object.keys(potentialGenes).length;
+	this.genes = new Object();
+
+	Object.defineProperty(this, 'JSON', {
+	    get: function () {
+	        return JSON.stringify(this.genes, null, '\t');
+	    }
+	})
 
 	/* Methods for initialization */
-	function getRandomInt(min, max) {
+	var getRandomInt = function(min, max) {
 	  return Math.floor(Math.random() * (max - min)) + min;
 	}
 
 	this.getRandomGene = function(name){
-
 			var values = potentialGenes[name];
 			var index = getRandomInt(0, values.length);
-			return values[index];
-		
+			return values[index];		
 	}
 
 	this.setRandomGene = function(name){
-
-		genes[name] = this.getRandomGene(name);
-
+		this.genes[name] = this.getRandomGene(name);
 	}
 
 	this.setRandomGenes = function(){
-
-		for (var i = 0; i < count; i++){
-
-			this.setRandomGene(names[i]);
-
+		for (var i = 0; i < this.length; i++){
+			this.setRandomGene(this.names[i]);
 		}
-
-	}
-
-	// Initialize Genes
-	this.setRandomGenes();
-
-	/* More Getters and Setters */
-
-	this.getGenes = function(){
-		return genes;
-	}
-
-	this.getNames = function(){
-		return names;
-	}
-
-	this.getCount = function(){
-		return count;
-	}
-
-	this.getJSON = function(){
-		return JSON.stringify(genes, null, '\t');
-	}
-
-	this.setGenes = function(newGenes){
-		genes = newGenes;
-	}
-
-	this.setGene = function(newName, newGene){
-		genes[newName] = newGene;
 	}
 
 	/* Genetic operators */
-
 	this.mutate = function(rate){
-
-		for (var i = 0; i < count; i++){
-
+	    for (var i = 0; i < this.length; i++) {
 			if(Math.random() <= rate){
-				var name = names[i];
+				var name = this.names[i];
 				this.setRandomGene(name);
 			} // end if
 		} // end for
@@ -81,52 +50,49 @@ function Genome(genomeJSON){
 
 	// Random chance any particular gene is from either parent.
 	this.crossover = function(mate){
-
 		var Child = new Genome(genomeJSON);
 		// Duplicate this parent. Assuming the same species i.e. from the same config.
-		Child.copyGenes(this.getGenes());
+		Child.copyGenes(this.genes);
 
-		var mateNames = mate.getNames();
-		var mateGenes = mate.getGenes();
-		for (var i = 0; i < mate.getCount(); i++){
+		var mateNames = mate.names;
+		var mateGenes = mate.genes;
+		for (var i = 0; i < mate.length; i++){
 			if(Math.random() <= 0.5){
 				var nameToPass = mateNames[i];
 				var valueToPass = mateGenes[nameToPass];
-				Child.setGene(nameToPass, valueToPass);
+				Child.genes[nameToPass] = valueToPass;
 			}
 		}
 		return Child;
-
 	} // end crossover
 
 	/* Helper Methods */
-	this.copyGenes = function(genesToCopy){
+	this.copyGenes = function (genesToCopy) {
 		var namesToCopy = Object.keys(genesToCopy);
 		var geneCount = Object.keys(genesToCopy).length; 
 		for (var i = 0; i < geneCount; i++){
 			nameToCopy = namesToCopy[i];
-			genes[nameToCopy] = genesToCopy[nameToCopy];
+			this.genes[nameToCopy] = genesToCopy[nameToCopy];
 		} // end for
 	} // end copyGenes
 
 	this.hasGene = function(nameToMatch, valueToMatch){
 
-		if(names.indexOf(nameToMatch) > -1){
-			if(valueToMatch == genes[nameToMatch]){
+		if(this.names.indexOf(nameToMatch) > -1){
+			if(valueToMatch == this.genes[nameToMatch]){
 				return true;
 			}
 		} // end if index exists
 		return false;
 	} // end hasGene
 
-
 	this.isEqual = function(genomeToMatch){
-		if(this.getCount() != genomeToMatch.getCount()){
+	    if (this.length != genomeToMatch.length) {
 			return false;
 		}
-		var namesToMatch = genomeToMatch.getNames();
-		var genesToMatch = genomeToMatch.getGenes();
-		for (var i = 0; i < genomeToMatch.getCount(); i++){
+		var namesToMatch = genomeToMatch.names;
+		var genesToMatch = genomeToMatch.genes;
+		for (var i = 0; i < genomeToMatch.length; i++){
 			var nameToMatch = namesToMatch[i];
 			var valueToMatch = genesToMatch[nameToMatch];
 			if(!this.hasGene(nameToMatch, valueToMatch)){
@@ -138,30 +104,28 @@ function Genome(genomeJSON){
 
 	// returns the percentage of genes that are the same
 	this.howSimilar = function(genomeToCompare){
-
 		var geneMatchCount = 0;
-		var namesToMatch = genomeToCompare.getNames();
-		var genesToMatch = genomeToCompare.getGenes();
-		for (var i = 0; i < genomeToCompare.getCount(); i++){
+		var namesToMatch = genomeToCompare.names;
+		var genesToMatch = genomeToCompare.genes;
+		for (var i = 0; i < genomeToCompare.length; i++){
 			var nameToMatch = namesToMatch[i];
 			var valueToMatch = genesToMatch[nameToMatch];
 			if(this.hasGene(nameToMatch, valueToMatch)){
 				geneMatchCount++;
 			} // end if hasGene
 		} // end for
-
-		return geneMatchCount / count;
-
+		return geneMatchCount / this.length;
 	} // end howSimilar
 
 
 	// Prints
 	this.print = function(){
-
-		console.log(this.getJSON());
-
+		console.log(this.JSON);
 	}
 
-}
+    /* Initialization */
+	this.setRandomGenes();
+
+} // end Genome
 
 module.exports = Genome;
