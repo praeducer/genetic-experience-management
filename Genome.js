@@ -3,10 +3,10 @@
 function Genome(genomeJSON){
 
     /* Setup Genome using configuration object */
-    // private
+    // private variables
     var potentialGenes = JSON.parse(genomeJSON);
 
-    // public
+    // public variables
 	this.names = Object.keys(potentialGenes);
 	this.length = Object.keys(potentialGenes).length;
 	this.genes = new Object();

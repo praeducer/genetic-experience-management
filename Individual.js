@@ -8,90 +8,56 @@ function Individual(individualJSON){
 	
 	var Genome = require('./Genome');
 
-	/* Setup Individual using configuration object */
+    /* Setup Individual using configuration object */
+    // private variables
 	var individualArray = JSON.parse(individualJSON);
-
 	var genomeArray = individualArray['genome'];
 	var genomeJSON = JSON.stringify(genomeArray);
-	var genome = new Genome(genomeJSON);
-
 	var fitnessArray = individualArray['fitness'];
 	var fittestGenomeJSON = JSON.stringify(fitnessArray['fittestGenome']);
-	var fittestGenome = new Genome(fittestGenomeJSON);
-
 	var mutationArray = individualArray['mutation'];
-	var mutationRate = mutationArray['rate'];
 
-	var fitness = 0;
+    // public variables
+	this.genome = new Genome(genomeJSON);
+	this.fittestGenome = new Genome(fittestGenomeJSON);
+	this.mutationRate = mutationArray['rate'];
+	this.fitness = 0;
 
-	/* Methods for initialization */
+	Object.defineProperty(this, 'JSON', {
+	    get: function () {
+	        var individual = new Object();
+	        individual['Genome'] = this.genome.genes;
+	        individual['fitness'] = new Object();
+	        individual['fitness']['value'] = this.fitness;
+	        individual['mutation'] = new Object();
+	        individual['mutation']['rate'] = this.mutationRate;
+	        return JSON.stringify(individual, null, '\t');
+	    }
+	})
+
+    /* Genetic operators */
 	this.evaluate = function(){
-
-		fitness = genome.howSimilar(fittestGenome);
-
+		this.fitness = this.genome.howSimilar(this.fittestGenome);
 	}
 
-	/* Initialization */
-	this.evaluate();
-
-	/* More Getters and Setters */
-	this.getJSON = function(){
-
-		var individual = new Object();
-		individual['Genome'] = genome.getGenes();
-		individual['fitness'] = new Object();
-		individual['fitness']['value'] = fitness;
-		individual['mutation'] = new Object();
-		individual['mutation']['rate'] = mutationRate;
-		return JSON.stringify(individual, null, '\t');
-
-	}
-
-	this.getGenome = function(){
-		return genome;
-	}
-
-	this.getFittestGenome = function(){
-		return fittestGenome;
-	}
-
-	this.getMutationRate = function(){
-		return mutationRate;
-	}
-
-	this.getFitness = function(){
-		return fitness;
-	}
-
-	this.setGenome = function(newGenome){
-
-		genome = newGenome;
-		this.evaluate();
-
-	}
-
-	/* Genetic operators */
 	this.mutate = function(){
-
-		genome.mutate(mutationRate);
+		this.genome.mutate(this.mutationRate);
 		this.evaluate();
-
 	}
 
 	this.crossover = function(mate){
-
 		var Child = new Individual(individualJSON);
-		Child.setGenome(genome.crossover(mate.getGenome()));
+		Child.genome = this.genome.crossover(mate.genome);
 		return Child;
-
 	}
 
-	// Prints
+    /* Helpers */
 	this.print = function(){
-		
-		console.log(this.getJSON());
-
+		console.log(this.JSON);
 	}
+
+    /* Initialization */
+	this.evaluate();
 
 }
 
