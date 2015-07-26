@@ -7,117 +7,85 @@ var Individual = require('./Individual');
 function Generation(generationJSON){
 
 	/* Setup Generation using configuration object */
-	var generationArray = JSON.parse(generationJSON);
-	
+    // private variables
+    var generationArray = JSON.parse(generationJSON);
 	var individualArray = generationArray['individual'];
 	var individualJSON = JSON.stringify(individualArray);
 
-	var numberOfIndividuals = generationArray['numberOfIndividuals'];
-	var individuals = new Array();
+    // public variables
+	this.numberOfIndividuals = generationArray['numberOfIndividuals'];
+	this.individuals = new Array();
 
-	/* Methods for initialization */
-	this.setRandomIndividuals = function(){
-
-		for (var i = 0; i < numberOfIndividuals; i++) {
-			var individual = new Individual(individualJSON);
-			individuals.push(individual);
-		}
-
+    /* Methods for initialization */
+	this.createIndividuals = function (amount) {
+	    if (amount < 1) amount = 1;
+	    for (var i = 0; i < amount; i++) {
+	        this.individuals.push(new Individual(individualJSON));
+	    }
 	}
 
-	/* Initialization */
-	this.setRandomIndividuals();
+    /* The state of the generation */
+	Object.defineProperty(this, 'averageFitness', {
+	    get: function () {
+	        var totalFitness = 0;
+	        for (var i = 0; i < this.individuals.length; i++) {
+	            totalFitness += this.individuals[i].fitness;
+	        }
+	        return totalFitness / this.individuals.length;
+	    }
+	})
+
+    // Returns the most fit individuals as an array or the fittest individual object if amount is 1
+	this.findFittest = function(amount){
+	    var length = this.individuals.length;
+	    var fittestIndividuals = new Array();
+	    // sort the individuals
+	    this.sort();
+	    if (amount > length) {
+	        amount = length;
+	    } else if (amount <= 1) {
+	        return this.individuals[length - 1];
+	    }
+	    for (var i = length - 1; i >= length - amount; i--) {
+	        fittestIndividuals.push(this.individuals[i]);
+	    }
+	    return fittestIndividuals;
+	}
 
 	/* Genetic Operators */
 	this.mutate = function(){
-
-		for (var i = 0; i < individuals.length; i++) {
-			individuals[i].mutate();
+        for (var i = 0; i < this.individuals.length; i++) {
+			this.individuals[i].mutate();
 		}
+    }
 
+    /* Helpers */
+    // Sort by fitness
+	this.sort = function () {
+	    this.individuals.sort(this.compareFitness);
 	}
 
-	
-
-	/* More Getters and Setters */
-	this.getIndividuals = function(){
-		return individuals;
-	}
-
-	// by fitness
-	this.getSortedIndividuals = function(){
-
-		var toBeSorted = individuals.slice(0);
-		return toBeSorted.sort(this.compareFitness);
-
-	}
-
-	this.getAverageFitness = function(){
-
-		var totalFitness = 0;
-
-		for (var i = 0; i < individuals.length; i++) {
-			totalFitness += individuals[i].getFitness();
-		}
-
-		return totalFitness / individuals.length;
-
-	}
-
-	this.getFittestIndividuals = function(amount){
-
-		var sorted = this.getSortedIndividuals();
-		var fittestIndividuals = new Array();
-
-		if(amount > individuals.length){
-			amount = individuals.length;
-		}
-
-		for (var i = individuals.length - 1; i >= individuals.length - amount; i--) {
-		
-			fittestIndividuals.push(sorted[i]);
-
-		}
-
-		return fittestIndividuals;
-
-	}
-
-	// Helpers
-	this.compareFitness = function(individual1, individual2){
-
-		var fitness1 = individual1.getFitness();
-		var fitness2 = individual2.getFitness();
-		return fitness1 - fitness2;
-
+	this.compareFitness = function (individual1, individual2) {
+		return individual1.fitness - individual2.fitness;
 	}
 
 	// Prints
-	this.printIndividuals = function(amountToPrint){
-
-		for (var i = 0; i < individuals.length; i++) {
-		
-			individuals[i].print();
-
+	this.printIndividuals = function (sort) {
+	    if (sort) this.sort();
+        for (var i = 0; i < this.individuals.length; i++) {
+			this.individuals[i].print();
 		}
-
 	}
 
-	this.printFittest = function(amount){
-
-		var fittestIndividuals = this.getFittestIndividuals(amount);
-
-		for (var i = 0; i < fittestIndividuals.length; i++) {
-		
+	this.printFittest = function (amount) {
+	    var fittestIndividuals = this.findFittest(amount);
+		for (var i = 0; i < amount; i++) {
 			fittestIndividuals[i].print();
-
 		}
-
 	}
 
-	this.stats = function(){
-
-	}
+    /* Initialization */
+	this.createIndividuals(this.numberOfIndividuals);
 
 }
 

@@ -274,6 +274,10 @@ function Population(numberOfIndividuals, numberOfTraits, possibleTraits, desired
 		}
 
 	}
+    // TODO: Print out a description of the current state of the population.
+	this.stats = function () {
+
+	}
 
 }
 

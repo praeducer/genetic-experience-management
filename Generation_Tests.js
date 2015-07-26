@@ -32,32 +32,32 @@ var generationConfig = '{\
 console.log('~ Individuals from a New Generation ~');
 console.log('--------------------');
 var generation = new Generation(generationConfig);
-generation.printIndividuals();
+generation.printIndividuals(true);
 
 console.log('\nCompare fitness of individuals 1 and 2 (1 - 2):');
 console.log('--------------------');
-console.log(generation.compareFitness(generation.getIndividuals()[1], generation.getIndividuals()[2]));
+console.log(generation.compareFitness(generation.individuals[1], generation.individuals[2]));
 
 console.log('\nTop 3 Fittest Individuals:');
 console.log('--------------------');
 generation.printFittest(3);
 
-console.log('\nAverage Fitness:');
+console.log('\nAverage Fitness of Entire Generation:');
 console.log('--------------------');
-console.log(generation.getAverageFitness());
+console.log(generation.averageFitness);
 
+generation.mutate();
 console.log('\n\n~ Mutated Individuals ~');
 console.log('--------------------');
-generation.mutate();
-generation.printIndividuals();
+generation.printIndividuals(true);
 
-console.log('\nTop 3 Fittest Mutated Individuals:');
+console.log('\nTop 3 Fittest Individuals after Mutation:');
 console.log('--------------------');
 generation.printFittest(3);
 
-console.log('\nAverage Mutated Fitness:');
+console.log('\nAverage Fitness after Mutation:');
 console.log('--------------------');
-console.log(generation.getAverageFitness());
+console.log(generation.averageFitness);
 
 
 console.log();
