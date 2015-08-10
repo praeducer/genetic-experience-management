@@ -48,6 +48,7 @@ function Individual(individualJSON){
 	this.crossover = function(mate){
 		var Child = new Individual(individualJSON);
 		Child.genome = this.genome.crossover(mate.genome);
+		Child.evaluate();
 		return Child;
 	}
 

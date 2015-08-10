@@ -29,10 +29,11 @@ var generationConfig = '{\
 	}\
 }';
 
-console.log('~ Individuals from a New Generation ~');
+console.log('~ First Generation ~');
 console.log('--------------------');
 var generation = new Generation(generationConfig);
-generation.printIndividuals(true);
+generation.createIndividuals();
+generation.print(true);
 
 console.log('\nCompare fitness of individuals 1 and 2 (1 - 2):');
 console.log('--------------------');
@@ -42,6 +43,10 @@ console.log('\nTop 3 Fittest Individuals:');
 console.log('--------------------');
 generation.printFittest(3);
 
+console.log('\nWeakest 2 Individuals:');
+console.log('--------------------');
+generation.printWeakest(2);
+
 console.log('\nAverage Fitness of Entire Generation:');
 console.log('--------------------');
 console.log(generation.averageFitness);
@@ -49,15 +54,36 @@ console.log(generation.averageFitness);
 generation.mutate();
 console.log('\n\n~ Mutated Individuals ~');
 console.log('--------------------');
-generation.printIndividuals(true);
+generation.print(true);
 
-console.log('\nTop 3 Fittest Individuals after Mutation:');
+console.log('\nFittest Individual after Mutation:');
 console.log('--------------------');
-generation.printFittest(3);
+generation.printFittest(1);
+
+console.log('\nWeakest Individual after Mutation:');
+console.log('--------------------');
+generation.printWeakest(1);
 
 console.log('\nAverage Fitness after Mutation:');
 console.log('--------------------');
 console.log(generation.averageFitness);
+
+console.log('~ Second Generation ~');
+console.log('--------------------');
+var generation2 = generation.mate(3, []);
+generation2.print(true);
+
+console.log('\nFittest Individual from Second Generation:');
+console.log('--------------------');
+generation2.printFittest(1);
+
+console.log('\nWeakest Individual from Second Generation:');
+console.log('--------------------');
+generation2.printWeakest(1);
+
+console.log('\nAverage Fitness of Second Generation:');
+console.log('--------------------');
+console.log(generation2.averageFitness);
 
 
 console.log();
