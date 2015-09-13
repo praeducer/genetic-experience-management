@@ -68,9 +68,9 @@ console.log('\nAverage Fitness after Mutation:');
 console.log('--------------------');
 console.log(generation.averageFitness);
 
-console.log('~ Second Generation ~');
+console.log('\n~ Second Generation: Mating of three fittest from first generation ~');
 console.log('--------------------');
-var generation2 = generation.mate(3, []);
+var generation2 = generation.mate(0.5, []);
 generation2.print(true);
 
 console.log('\nFittest Individual from Second Generation:');
@@ -84,6 +84,32 @@ generation2.printWeakest(1);
 console.log('\nAverage Fitness of Second Generation:');
 console.log('--------------------');
 console.log(generation2.averageFitness);
+
+generation2.mutate();
+console.log('\n Mutated Second Generation:');
+console.log('--------------------');
+generation2.print(true);
+
+console.log('\n~ Third Generation: Mating of three fittest from first and three fittest from second generation ~');
+console.log('--------------------');
+var generation3 = generation.mate(0.5, generation2.findTopPercent(0.5));
+generation3.print(true);
+
+console.log('\nFittest Individual from Third Generation:');
+console.log('--------------------');
+generation3.printFittest(1);
+
+console.log('\nFittest Twenty Percent from Third Generation:');
+console.log('--------------------');
+generation3.printTopPercent(0.2);
+
+console.log('\nWeakest Individual from Third Generation:');
+console.log('--------------------');
+generation3.printWeakest(1);
+
+console.log('\nAverage Fitness of Third Generation:');
+console.log('--------------------');
+console.log(generation3.averageFitness);
 
 
 console.log();

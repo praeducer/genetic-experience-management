@@ -39,7 +39,13 @@ function Generation(generationJSON){
     // Returns the most fit individuals as an array
 	this.findFittest = function(amount){
 	    this.sort();
-	    return this.individuals.reverse().slice(0, amount);;
+	    return this.individuals.reverse().slice(0, amount);
+	}
+    // Returns the top X% of the most fit individuals as an array
+    // Takes in the ratio percentage (e.g. 0.9 for 90 percent)
+	this.findTopPercent = function (decimal) {
+	    var fittestAmount = Math.ceil(decimal * this.numberOfIndividuals);
+	    return this.findFittest(fittestAmount);
 	}
 
 	this.findWeakest = function (amount) {
@@ -54,22 +60,26 @@ function Generation(generationJSON){
 		}
 	}
 
-    // Given the some amount of fittest individuals from this generation and some other fit individuals, create a new generation.
-	this.mate = function (amountFittest, otherFitIndividuals) {
+    // Given some percentage (in decimal form) of fittest individuals from this generation and some other fit individuals, create a new generation.
+	this.mate = function (decimalFittest, otherFitIndividuals) {
         // Join the fittest individuals with any others from outside this generation that are chosen to mate.
-	    var matingPool = this.findFittest(amountFittest).concat(otherFitIndividuals);
+	    var matingPool = this.findTopPercent(decimalFittest).concat(otherFitIndividuals);
 	    var children = new Array();
-        // do it
-	    for (var session = 0; session < this.numberOfIndividuals; session++) {
-	        var partnerA = getRandomInt(0, matingPool.length - 1);
-	        var partnerB;
-            // get a random individual to mate with but make sure it is not the current individual.
-	        do {
-	            partnerB = getRandomInt(0, matingPool.length - 1);
-	        } while (partnerA == partnerB)
-	        var child = matingPool[partnerA].crossover(matingPool[partnerB]);
-	        children.push(child);
-	    } // done it
+	    if (matingPool.length > 1) {
+	        // do it
+	        for (var session = 0; session < this.numberOfIndividuals; session++) {
+	            var partnerA = getRandomInt(0, matingPool.length - 1);
+	            var partnerB;
+	            // get a random individual to mate with but make sure it is not the current individual.
+	            do {
+	                partnerB = getRandomInt(0, matingPool.length - 1);
+	            } while (partnerA == partnerB)
+	            var child = matingPool[partnerA].crossover(matingPool[partnerB]);
+	            children.push(child);
+	        } // done it
+	    } else {
+	        children = matingPool;
+	    }
 	    var childGeneration = new Generation(generationJSON);
         childGeneration.individuals = children;
 	    return childGeneration;
@@ -104,6 +114,10 @@ function Generation(generationJSON){
 
 	this.printFittest = function (amount) {
 	    this.printIndividuals(this.findFittest(amount));
+	}
+
+	this.printTopPercent = function (decimal) {
+	    this.printIndividuals(this.findTopPercent(decimal));
 	}
 
 	this.printWeakest = function (amount) {

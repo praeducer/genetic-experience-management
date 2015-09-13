@@ -1,8 +1,6 @@
 // GENETIC EXPERIENCE MANAGEMENT
 // by Paul Prae
 // First created December 5th, 2014
-// TODO: Unit Test thoroughly
-// TODO: Handle an empty Individual
 
 function Individual(individualJSON){
 	
