@@ -17,3 +17,4 @@
 * Is 'this.' for properties redundant? 
 * Handle an empty Individual
 * Turn repeated helper methods and print functions into their own helper library
+* Write blog post
