@@ -4,34 +4,16 @@
 
 var Generation = require('./Generation');
 
-var generationConfig = '{\
-	"numberOfIndividuals": 5,\
-	"individual": {\
-		"genome": {\
-			"headerFontFamily" : ["Nixie One", "Cantata One", "Rancho"],\
-			"paragraphFontFamily" : ["Ledger", "Imprima", "Gudea"],\
-			"headerColor" : ["brown", "pink", "turquoise"],\
-			"paragraphColor" : ["brown", "pink", "turquoise"],\
-			"backgroundColor" : ["brown", "pink", "turquoise"]\
-		},\
-		"fitness": {\
-			"fittestGenome": {\
-				"headerFontFamily" : ["Nixie One"],\
-				"paragraphFontFamily" : ["Imprima"],\
-				"headerColor" : ["turquoise"],\
-				"paragraphColor" : ["turquoise"],\
-				"backgroundColor" : ["turquoise"]\
-			}\
-		},\
-		"mutation": {\
-			"rate" : 0.25\
-		}\
-	}\
-}';
+var fs = require('fs');
+var configJSONPath = "./gem.json"; // filepath of the file to read
+var configJSON = fs.readFileSync(configJSONPath, 'utf8');
+var configArray = JSON.parse(configJSON);
+var generationArray = configArray['gem']['population']['generation'];
+var generationJSON = JSON.stringify(generationArray);
 
 console.log('~ First Generation ~');
 console.log('--------------------');
-var generation = new Generation(generationConfig);
+var generation = new Generation(generationJSON);
 generation.createIndividuals();
 generation.print(true);
 

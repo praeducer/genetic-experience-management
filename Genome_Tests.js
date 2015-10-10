@@ -1,16 +1,15 @@
 var Genome = require('./Genome');
 
-var genomeConfig = '{\
-						"headerFontFamily" : ["Nixie One", "Cantata One", "Rancho"],\
-						"paragraphFontFamily" : ["Ledger", "Imprima", "Gudea"],\
-						"headerColor" : ["brown", "pink", "turquoise"],\
-						"paragraphColor" : ["brown", "pink", "turquoise"],\
-						"backgroundColor" : ["brown", "pink", "turquoise"]\
-					}';
+var fs = require('fs');
+var configJSONPath = "./gem.json"; // filepath of the file to read
+var configJSON = fs.readFileSync(configJSONPath, 'utf8');
+var configArray = JSON.parse(configJSON);
+var genomeArray = configArray['gem']['population']['generation']['individual']['genome'];
+var genomeJSON = JSON.stringify(genomeArray);
 
 console.log("\nA new Genome:")
 console.log('---------------');
-var genome = new Genome(genomeConfig);
+var genome = new Genome(genomeJSON);
 genome.print();
 
 console.log("\nNumber of Genes:")
@@ -37,7 +36,7 @@ console.log(genome.isEqual(genome));
 
 console.log("\nAnother Genome:")
 console.log('---------------');
-var genome2 = new Genome(genomeConfig);
+var genome2 = new Genome(genomeJSON);
 genome2.print();
 
 console.log("\nEqual to new genome?")
@@ -55,7 +54,7 @@ console.log(genome.howSimilar(genome));
 
 console.log("\nChild of original genome and new genome:")
 console.log('---------------');
-childGenome = genome.crossover(genome2);
+var childGenome = genome.crossover(genome2);
 childGenome.print();
 
 console.log("\nHow similar is the child to the first parent?")
