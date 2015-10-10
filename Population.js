@@ -44,7 +44,7 @@ function Population(populationJSON){
     // If iterations are false or zero then it defaults to the amount of iterations in the config file.
 	this.evolve = function (iterations) {
 	    if(!iterations) iterations = this.numberOfGenerations;
-	    for (i = 0; i < iterations; i++) {
+	    for (var i = 0; i < iterations; i++) {
 	        this.mate();
 	    }
 	}

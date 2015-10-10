@@ -53,7 +53,6 @@ function Genome(genomeJSON){
 		var Child = new Genome(genomeJSON);
 		// Duplicate this parent. Assuming the same species i.e. from the same config.
 		Child.copyGenes(this.genes);
-
 		var mateNames = mate.names;
 		var mateGenes = mate.genes;
 		for (var i = 0; i < mate.length; i++){
@@ -71,13 +70,12 @@ function Genome(genomeJSON){
 		var namesToCopy = Object.keys(genesToCopy);
 		var geneCount = Object.keys(genesToCopy).length; 
 		for (var i = 0; i < geneCount; i++){
-			nameToCopy = namesToCopy[i];
+			var nameToCopy = namesToCopy[i];
 			this.genes[nameToCopy] = genesToCopy[nameToCopy];
 		} // end for
 	} // end copyGenes
 
 	this.hasGene = function(nameToMatch, valueToMatch){
-
 		if(this.names.indexOf(nameToMatch) > -1){
 			if(valueToMatch == this.genes[nameToMatch]){
 				return true;

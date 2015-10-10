@@ -1,3 +1,4 @@
+* Update gem.json configuration so it evolves over many generations with few individuals.
 * Test population more thoroughly
 * Unit test everything and, after using them as inspiration, delete current console.log test files.
 * Recreate DEMO

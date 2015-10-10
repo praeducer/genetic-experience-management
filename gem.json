@@ -1,7 +1,7 @@
 {
 	"gem": {
 		"population": {
-			"numberOfGenerations": 1000,
+			"numberOfGenerations": 10,
 			"generation": {
 				"numberOfIndividuals": 100,
 				"individual": {
@@ -22,7 +22,7 @@
 						}
 					},
 					"mutation": {
-						"rate" : 0.05,
+						"rate" : 0.10
 					}
 				}
 			}
